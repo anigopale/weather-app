@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { fetchWeather } from '../actions/index';
+//fetchWeather action creator imported
 
-
-
-export default class SearchBar extends Component {
+class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = { term: '' };
 
     this.onInputChange = this.onInputChange.bind(this);
     //binds local this with global this
+    this.onFormSubmit = this.onFormSubmit.bind(this);
   }// constructor to initialize local component state
 
   onInputChange(event) {
@@ -18,7 +21,9 @@ export default class SearchBar extends Component {
 
   onFormSubmit(event){
     event.preventDefault(); //don't submit by default
-  }
+    this.props.fetchWeather(this.state.term);
+    this.setState({ term: '' });
+  }// on submit, calls action creator with state.term as an argument
 
 
   render() {
@@ -36,3 +41,10 @@ export default class SearchBar extends Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ fetchWeather }, dispatch);
+}// bind actioncreator with container and middleware
+
+export default connect(null, mapDispatchToProps)(SearchBar);
+// export container, null, because there's no state bound
