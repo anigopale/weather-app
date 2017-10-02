@@ -8,7 +8,7 @@ export default class SearchBar extends Component {
     this.state = { term: '' };
 
     this.onInputChange = this.onInputChange.bind(this);
-    //bind local this with global this
+    //binds local this with global this
   }// constructor to initialize local component state
 
   onInputChange(event) {
@@ -16,9 +16,14 @@ export default class SearchBar extends Component {
     this.setState({ term: event.target.value });
   }// onchange event, change state.term
 
+  onFormSubmit(event){
+    event.preventDefault(); //don't submit by default
+  }
+
+
   render() {
     return (
-      <form className="input-group">
+      <form onSubmit={this.onFormSubmit} className="input-group">
         <input
           placeholder="Get a five-day forecast in your favorite cities"
           className="form-control"
@@ -27,7 +32,7 @@ export default class SearchBar extends Component {
         <span className="input-group-btn">
           <button type="submit" className="btn btn-secondary">Submit</button>
         </span>
-      </form>
+      </form> //form has its advantages
     );
   }
 }
